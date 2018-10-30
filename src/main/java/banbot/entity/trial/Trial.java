@@ -49,7 +49,7 @@ public class Trial {
             if (banVoters.contains(user)) throw new TrialActionException("you have already voted to ban " + userOnTrial.getUserName());
             addBanVote(user);
         } else {
-            if (spareVoters.contains(user)) throw new TrialActionException("you have already voted to spare" + userOnTrial.getUserName());
+            if (spareVoters.contains(user)) throw new TrialActionException("you have already voted to spare " + userOnTrial.getUserName());
             addSpareVote(user);
         }
     }
