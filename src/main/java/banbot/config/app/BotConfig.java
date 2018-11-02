@@ -1,4 +1,4 @@
-package banbot.config;
+package banbot.config.app;
 
 import org.apache.commons.lang3.BooleanUtils;
 

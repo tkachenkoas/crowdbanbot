@@ -2,7 +2,7 @@ package banbot.utils;
 
 import banbot.entity.trial.Trial;
 import com.vdurmont.emoji.EmojiParser;
-import banbot.config.MessagesConfig;
+import banbot.config.app.MessagesConfig;
 import banbot.entity.common.CallBackData;
 import banbot.entity.trial.TrialAction;
 import banbot.entity.trial.TrialKey;

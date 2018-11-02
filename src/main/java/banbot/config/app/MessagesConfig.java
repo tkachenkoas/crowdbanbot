@@ -1,4 +1,4 @@
-package banbot.config;
+package banbot.config.app;
 
 import java.io.FileInputStream;
 import java.util.Properties;

@@ -1,6 +1,6 @@
 package banbot.utils;
 
-import banbot.config.BotConfig;
+import banbot.config.app.BotConfig;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;

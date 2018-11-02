@@ -1,7 +1,7 @@
 package banbot.entity.trial;
 
 
-import banbot.config.MessagesConfig;
+import banbot.config.app.MessagesConfig;
 import banbot.exceptions.TGBotException;
 import banbot.exceptions.TrialActionException;
 import org.telegram.telegrambots.meta.api.objects.User;
