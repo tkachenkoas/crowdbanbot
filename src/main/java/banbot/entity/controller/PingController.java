@@ -8,7 +8,7 @@ public class PingController {
 
     @GetMapping("/ping")
     public String getGreeting() {
-        return "Service alive!";
+        return "It's alive!";
     }
 
 

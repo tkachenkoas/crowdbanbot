@@ -3,6 +3,7 @@ package banbot.service;
 import banbot.config.app.BotConfig;
 import banbot.config.app.MessagesConfig;
 import banbot.entity.common.CallBackData;
+import banbot.entity.controller.CrowdBanBot;
 import banbot.entity.trial.Trial;
 import banbot.entity.trial.TrialAction;
 import banbot.entity.trial.TrialKey;

@@ -1,7 +1,8 @@
-package banbot.service;
+package banbot.entity.controller;
 
 import banbot.config.app.BotConfig;
 import banbot.exceptions.TGBotException;
+import banbot.service.BanBotService;
 import banbot.utils.MockUpdateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

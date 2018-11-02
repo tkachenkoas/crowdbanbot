@@ -25,7 +25,7 @@ public class CallBackData implements Serializable {
     }
 
     public String getStringCallbackData(){
-        return action.name() + SERIALIZE_DELIMETER + trialKey.getChatId() + SERIALIZE_DELIMETER + trialKey.getUserId();
+        return String.join(SERIALIZE_DELIMETER, action.name(), ""+trialKey.getChatId(), ""+trialKey.getUserId());
     }
 
     public static CallBackData fromString(String data){
