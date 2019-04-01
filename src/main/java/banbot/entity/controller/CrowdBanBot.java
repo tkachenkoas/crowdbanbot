@@ -1,78 +1,61 @@
 package banbot.entity.controller;
 
-import banbot.config.app.BotConfig;
+import banbot.config.dto.BotProps;
+import banbot.entity.common.HandleResult;
 import banbot.exceptions.TGBotException;
-import banbot.service.BanBotService;
+import banbot.service.handlers.UpdateHandler;
 import banbot.utils.MockUpdateUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
 import java.io.Serializable;
-import java.util.Optional;
-
-import static banbot.utils.TGBotUtils.getMention;
+import java.util.List;
 
 @Component
 public class CrowdBanBot extends TelegramLongPollingBot {
 
     private static final String LOG_TAG = "CrowdBanBot";
 
-    @Autowired
-    private BanBotService banService;
+    private List<UpdateHandler> handlers;
+    private MockUpdateUtils mockUtil;
+    private BotProps props;
+
+    public CrowdBanBot(@Lazy List<UpdateHandler> handlers, MockUpdateUtils mockUtil, BotProps props) {
+        this.handlers = handlers;
+        this.mockUtil = mockUtil;
+        this.props = props;
+    }
 
     @Override
     public String getBotUsername() {
-        return BotConfig.getBotUsername();
+        return props.getBotName();
     }
 
     public void onUpdateReceived(Update update) {
         BotLogger.info(LOG_TAG,"Incoming update: " + update);
-        MockUpdateUtils.mockUpdate(update);
-
-        try{
-            Message message = update.getMessage();
-            if (messageFromOwnChat(update)) {
-                banService.processOwnchat(message);
-                return;
-            }
-
-            if (isMentioned(message)) {
-                banService.initTrial(message);
-                return;
-            }
-
-            if (receivedButtonCallback(update)) {
-                banService.processButtonCallback(update);
-                return;
-            }
-        } catch (TGBotException e) {
-            BotLogger.info(LOG_TAG, "Caught bot process exception: " + e.getMessage());
-        } catch (Exception e) {
-            BotLogger.error(LOG_TAG, e);
+        if (props.getTestMode() && update.getCallbackQuery() != null) {
+            mockUtil.mockUpdate(update);
         }
 
+        for (UpdateHandler handler: handlers) {
+            try{
+                if (handler.handle(update) == HandleResult.TERMINAL) break;
+            } catch (TGBotException e) {
+                BotLogger.info(LOG_TAG, "Caught bot process exception: " + e.getMessage());
+            } catch (Exception e) {
+                BotLogger.error(LOG_TAG, e);
+            }
+        }
     }
 
-    private boolean messageFromOwnChat(Update update) {
-        return BotConfig.getOwnChatId().equals(Optional.ofNullable(update)
-                                                        .map(Update::getMessage)
-                                                        .map(Message::getChatId)
-                                                        .orElse(null));
-    }
-
-    private boolean isMentioned(Message message){
-        return message != null && StringUtils.contains(message.getText(), getMention(BotConfig.getBotUsername()));
-    }
-
-    private boolean receivedButtonCallback(Update update) {
-        return update.getCallbackQuery() != null;
+    public <T> T processExecute( Class<T> resultClass, BotApiMethod method) {
+        Serializable result = processExecute(method);
+        return resultClass.isInstance(result) ? (T) processExecute(method) : null;
     }
 
     public Serializable processExecute(BotApiMethod method) {
@@ -86,8 +69,11 @@ public class CrowdBanBot extends TelegramLongPollingBot {
     }
 
     public String getBotToken() {
-        return BotConfig.getApiKey();
+        return props.getToken();
     }
 
+    public Integer getBotUserId() {
+        return props.getBotUserId();
+    }
 
 }
