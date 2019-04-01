@@ -55,7 +55,7 @@ public class CrowdBanBot extends TelegramLongPollingBot {
 
     public <T> T processExecute( Class<T> resultClass, BotApiMethod method) {
         Serializable result = processExecute(method);
-        return resultClass.isInstance(result) ? (T) processExecute(method) : null;
+        return resultClass.isInstance(result) ? (T) result : null;
     }
 
     public Serializable processExecute(BotApiMethod method) {
