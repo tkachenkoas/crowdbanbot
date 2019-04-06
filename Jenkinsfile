@@ -8,6 +8,8 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
+                configFileProvider([configFile('tg-ban-bot-dev')]) {
+                }
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
