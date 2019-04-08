@@ -9,7 +9,7 @@ pipeline {
         stage('Build') { 
             steps {
                 configFileProvider(
-                    [configFile(fileId: '${config-file-id}', targetLocation : '${config-file-name}')]
+                    [configFile(fileId: ${config-file-id}, targetLocation : ${config-file-name})]
                 ) {
                 }
                 sh 'mvn Dprofile=dev -B -DskipTests clean package'
