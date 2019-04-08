@@ -13,6 +13,7 @@ pipeline {
                 ) {
                 }
                 sh 'mvn Dprofile=dev -B -DskipTests clean package'
+                sh 'heroku deploy:jar target/crowdbanbot-1.0-SNAPSHOT.jar -app crowdbanbot'
             }
         }
     }
