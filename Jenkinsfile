@@ -12,8 +12,7 @@ pipeline {
                     [configFile(fileId: "tg-ban-bot-dev", targetLocation : "conf-dev.properties")]
                 ) {
                 }
-                sh 'mvn -Dprofile=dev -B -DskipTests clean package'
-                sh 'heroku deploy:jar target/crowdbanbot-1.0-SNAPSHOT.jar -app crowdbanbot'
+                sh 'mvn -Dprofile=dev -B -DskipTests clean package heroku:deploy'
             }
         }
     }
