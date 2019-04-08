@@ -9,7 +9,7 @@ pipeline {
         stage('Build') { 
             steps {
                 configFileProvider(
-                    [configFile(fileId: "${params.config-file-id}", targetLocation : "${params.config-file-name}")]
+                    [configFile(fileId: "tg-ban-bot-dev", targetLocation : "conf-dev.properties")]
                 ) {
                 }
                 sh 'mvn Dprofile=dev -B -DskipTests clean package'
