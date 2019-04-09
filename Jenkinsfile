@@ -9,7 +9,7 @@ pipeline {
         stage('Build') { 
             steps {
                 configFileProvider(
-                    [configFile(fileId: "tg-ban-bot-dev", targetLocation : "conf-dev.properties")]
+                    [configFile(fileId: "${params.configFileId}", targetLocation : "${params.configFileName}")]
                 ) {
                 }
                 sh 'mvn -Dprofile=dev -B -DskipTests clean package heroku:deploy'
